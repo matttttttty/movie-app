@@ -1,11 +1,27 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
-import Like from "./common/like";
+import Genres from "./genres";
+import Pagination from "./common/pagination";
+import { paginate } from "../utils/paginate";
+import { getGenres } from "../services/fakeGenreService";
+import MoviesTable from "./moviesTable";
 
 class Movie extends Component {
-  state = { movies: getMovies() };
+  state = {
+    movies: [],
+    pageSize: 4,
+    currentPage: 1,
+    genres: [],
+    currentGenre: "AllGenres",
+  };
 
-  handleClick = (movie) => {
+  componentDidMount() {
+    const movies = getMovies();
+    const genres = getGenres();
+    this.setState({ movies, genres });
+  }
+
+  handleDelete = (movie) => {
     let movies = this.state.movies;
     movies = movies.filter((m) => m !== movie);
     this.setState({ movies });
@@ -18,55 +34,62 @@ class Movie extends Component {
     this.setState({ movies });
   };
 
-  renderMovies() {
-    return (
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Genre</th>
-            <th>NumberInStock</th>
-            <th>DailyRentalRate</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.state.movies.map((movie) => (
-            <tr key={movie._id}>
-              <td>{movie.title}</td>
-              <td>{movie.genre.name}</td>
-              <td>{movie.numberInStock}</td>
-              <td>{movie.dailyRentalRate}</td>
-              <td>
-                <Like
-                  onLike={() => this.handleLike(movie)}
-                  liked={movie.liked}
-                />
-              </td>
-              <td>
-                <button
-                  onClick={() => this.handleClick(movie)}
-                  className="btn btn-danger"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  }
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
+  };
+
+  handleGenreChange = (genre) => {
+    let currentGenre = genre.name;
+
+    this.setState({ currentGenre, currentPage: 1 });
+  };
 
   render() {
+    const genres = [{ _id: 0, name: "AllGenres" }, ...this.state.genres];
+    const {
+      pageSize,
+      currentPage,
+      movies: allMovies,
+      currentGenre,
+    } = this.state;
+    const filteredMovies =
+      currentGenre === "AllGenres"
+        ? allMovies
+        : allMovies.filter((m) => m.genre.name === currentGenre);
+    const movies = paginate(filteredMovies, currentPage, pageSize);
+
     return (
-      <div>
-        {this.state.movies.length === 0 ? (
-          <h2>there is no movie now.</h2>
-        ) : (
-          this.renderMovies()
-        )}
+      <div className="container">
+        <div className="row">
+          <div className="col-xm m-3">
+            <Genres
+              onGenreChange={this.handleGenreChange}
+              currentGenre={this.state.currentGenre}
+              genres={genres}
+            />
+          </div>
+          <div className="">
+            <div>
+              {this.state.movies.length === 0 ? (
+                <h2>there is no movie now.</h2>
+              ) : (
+                <MoviesTable
+                  movies={movies}
+                  onLike={this.handleLike}
+                  onDelete={this.handleDelete}
+                  onLiked={this.handleLike}
+                />
+              )}
+            </div>
+            <div>
+              <Pagination
+                currentPage={this.state.currentPage}
+                onPageChange={this.handlePageChange}
+                pages={Math.ceil(filteredMovies.length / this.state.pageSize)}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

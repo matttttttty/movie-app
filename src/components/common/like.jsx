@@ -1,13 +1,15 @@
 import React from "react";
+import propTypes from "prop-types";
 
-const Like = (props) => {
+const Like = ({ liked, onLike }) => {
   return (
     <i
-      className={props.liked ? "fa fa-heart" : "fa fa-heart-o"}
+      className={liked ? "fa fa-heart" : "fa fa-heart-o"}
       aria-hidden="true"
-      onClick={props.onLike}
+      onClick={onLike}
     ></i>
   );
 };
+Like.propTypes = { liked: propTypes.bool, onLike: propTypes.func };
 
 export default Like;
