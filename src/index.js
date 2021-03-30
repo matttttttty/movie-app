@@ -4,6 +4,9 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
+import "font-awesome/css/font-awesome.min.css";
+
+// import CountersApp from "./components//counterApp/countersApp";
 
 ReactDOM.render(
   <React.StrictMode>
