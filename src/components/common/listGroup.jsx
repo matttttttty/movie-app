@@ -1,34 +1,34 @@
 import React from "react";
 
-const Genres = ({
-  genres,
-  currentGenre,
+const ListGroup = ({
+  items,
+  selectItem,
   valueProperty,
   nameProperty,
-  onGenreChange,
+  onItemChange,
 }) => {
   return (
     <ul className="list-group">
-      {genres.map((g) => (
+      {items.map((item) => (
         <li
-          key={g[valueProperty]}
+          key={item[valueProperty]}
           className={
-            g[nameProperty] === currentGenre
+            item[nameProperty] === selectItem
               ? "list-group-item active"
               : "list-group-item"
           }
           aria-current="true"
-          onClick={() => onGenreChange(g)}
+          onClick={() => onItemChange(item)}
         >
-          {g.name}
+          {item.name}
         </li>
       ))}
     </ul>
   );
 };
-Genres.defaultProps = {
+ListGroup.defaultProps = {
   valueProperty: "_id",
   nameProperty: "name",
 };
 
-export default Genres;
+export default ListGroup;
