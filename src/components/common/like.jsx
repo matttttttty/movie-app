@@ -4,7 +4,7 @@ import propTypes from "prop-types";
 const Like = ({ liked, onLike }) => {
   return (
     <i
-      className={liked ? "fa fa-heart" : "fa fa-heart-o"}
+      className={liked ? "fa fa-heart clickable " : "fa fa-heart-o  clickable"}
       aria-hidden="true"
       onClick={onLike}
     ></i>
