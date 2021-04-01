@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Input from "./input";
+import Select from "./select";
 
 class Form extends Component {
   state = { data: {}, error: {} };
@@ -16,7 +17,6 @@ class Form extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const error = this.validate();
-    console.log(error);
     this.setState({ error: error || {} });
     this.doSubmit();
   };
@@ -44,6 +44,20 @@ class Form extends Component {
       />
     );
   };
+
+  renderSelect(name, label, items) {
+    const { data } = this.state;
+    return (
+      <Select
+        name={name}
+        label={label}
+        onChange={this.handleChange}
+        value={data[name]}
+        items={items}
+      />
+    );
+  }
+
   renderButton = (label) => {
     return (
       <button

@@ -46,6 +46,11 @@ class Movie extends Component {
     this.setState({ currentGenre, currentPage: 1 });
   };
 
+  handleAddNewMovie = () => {
+    console.log("adding");
+    this.props.history.push("/movie");
+  };
+
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
@@ -108,6 +113,13 @@ class Movie extends Component {
                 pages={Math.ceil(filteredMovies.length / pageSize)}
               />
             </div>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={this.handleAddNewMovie}
+            >
+              New Movie
+            </button>
           </div>
         </div>
       </div>

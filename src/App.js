@@ -5,10 +5,10 @@ import Movie from "./components/movies";
 import NavBar from "./components/navBar";
 import Customer from "./components/customer";
 import Rentals from "./components/rentals";
-import MovieDetail from "./components/movieDetails";
 import NotFound from "./components/notFound";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
+import MovieForm from "./components/movieForm";
 
 function App() {
   return (
@@ -16,7 +16,8 @@ function App() {
       <NavBar />
       <main className="container">
         <Switch>
-          <Route path="/movie/:id" component={MovieDetail} />
+          <Route path="/movie/:id" component={MovieForm} />
+          <Route path="/movie" component={MovieForm} />
           <Route path="/movies" exact component={Movie} />
           <Route path="/customers" component={Customer} />
           <Route path="/rentals" component={Rentals} />
