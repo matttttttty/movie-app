@@ -21,6 +21,10 @@ class Form extends Component {
     this.doSubmit();
   };
 
+  doSubmit() {
+    console.log("submit");
+  }
+
   handleChange = (e) => {
     const data = { ...this.state.data };
     data[e.target.name] = e.target.value;
