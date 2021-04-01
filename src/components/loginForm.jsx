@@ -1,11 +1,31 @@
 import React, { Component } from "react";
 import Input from "./common/input";
-import joi from "joi-browser";
+import Joi from "joi";
 
 class LoginForm extends Component {
-  state = { account: { username: "", password: "" } };
+  state = { account: { username: "", password: "" }, error: {} };
 
-  const schema = 
+  schema = Joi.object({
+    username: Joi.string().required().min(5).max(30).label("Username"),
+    password: Joi.string().required().label("Password"),
+  });
+
+  validate() {
+    const { account } = this.state;
+    const { error } = this.schema.validate(account, { abortEarly: false });
+    if (!error) return null;
+    const errors = {};
+    for (let item of error.details) errors[item.path] = item.message;
+    return errors;
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const error = this.validate();
+    console.log(error);
+    this.setState({ error: error || {} });
+    console.log("submit");
+  };
 
   handleChange = (e) => {
     const account = { ...this.state.account };
@@ -21,6 +41,7 @@ class LoginForm extends Component {
         name={name}
         value={account[name]}
         onChange={this.handleChange}
+        error={this.state.error}
         type={type}
       />
     );
@@ -28,11 +49,15 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <form action="">
+      <form onSubmit={this.handleSubmit}>
         {this.renderInput("Username", "username")}
         {this.renderInput("Password", "password", "password")}
 
-        <button type="submit" className="btn btn-primary">
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={this.validate()}
+        >
           Submit
         </button>
       </form>

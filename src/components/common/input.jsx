@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ label, name, value, onChange, type }) => {
+const Input = ({ label, name, value, onChange, error, type }) => {
   return (
     <div className="mb-3">
       <label htmlFor={name} className="form-label">
@@ -15,6 +15,9 @@ const Input = ({ label, name, value, onChange, type }) => {
         id={name}
         aria-describedby="emailHelp"
       />
+      {error[name] && (
+        <label className="badge bg-warning text-dark">{error[name]}</label>
+      )}
     </div>
   );
 };
